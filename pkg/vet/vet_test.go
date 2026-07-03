@@ -52,6 +52,10 @@ var mockDbSchema = &schema.Db{
 					Name: "baz_count",
 					Type: "int",
 				},
+				"bool_value": {
+					Name: "bool_value",
+					Type: "bool",
+				},
 			},
 			ReadOnly: true,
 		},
@@ -408,6 +412,18 @@ func TestSelect(t *testing.T) {
 		{
 			"select with null test",
 			`SELECT id FROM foo WHERE value IS NULL`,
+		},
+		{
+			"select with boolean test",
+			`SELECT id FROM baz WHERE bool_value IS TRUE`,
+		},
+		{
+			"select with negated boolean test",
+			`SELECT id FROM baz WHERE bool_value IS NOT TRUE`,
+		},
+		{
+			"select with is not null",
+			`SELECT id FROM foo WHERE value IS NOT NULL`,
 		},
 		{
 			"select with join",
