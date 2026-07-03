@@ -348,6 +348,12 @@ func parseExpression(ctx VetContext, clause *pg_query.Node, parseRe *ParseResult
 		if arg := nullTest.GetArg(); arg != nil {
 			return parseExpression(ctx, arg, parseRe)
 		}
+	case clause.GetBooleanTest() != nil:
+		// WHERE bool_value IS TRUE / IS FALSE / IS UNKNOWN (and NOT variants)
+		boolTest := clause.GetBooleanTest()
+		if arg := boolTest.GetArg(); arg != nil {
+			return parseExpression(ctx, arg, parseRe)
+		}
 	case clause.GetColumnRef() != nil:
 		// cu := columnRefToColumnUsed(expr)
 		cu := columnRefToColumnUsed(clause.GetColumnRef())
